@@ -22,8 +22,15 @@ public class LoggedUserPage {
     @FindBy(linkText = "Dashboard")
     private WebElement dashboardLink;
     
+    @FindBy(linkText = "Logout")
+    private WebElement logoutLink;
+    
     
     public WebElement getDashboardLink(){
         return dashboardLink;
+    }
+    
+    public WebElement getLogoutLink(){
+        return logoutLink;
     }
 }

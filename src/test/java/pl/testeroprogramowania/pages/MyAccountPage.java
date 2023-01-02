@@ -14,6 +14,7 @@ public class MyAccountPage {
     private final WebDriverWait wait;
     private Actions actions;
     private WebDriver driver;
+    
     @FindBy(css = "#reg_email")
     private WebElement regEmail;
     
@@ -21,22 +22,19 @@ public class MyAccountPage {
     private WebElement regPassword;
     
     @FindBy(css = "#username")
-    private WebElement username;
+    private WebElement usernameInput;
     
     @FindBy(css = "#password")
-    private WebElement password;
+    private WebElement passwordInput;
     
     @FindBy(name = "register")
     private WebElement registerButton;
     
+    @FindBy(name = "login")
+    private WebElement loginButton;
+    
     @FindBy(xpath = "//ul[@class='woocommerce-error']//li")
     private WebElement error;
-    
-    
-    public WebElement getError(){
-        return error;
-    }
-    
     
     public MyAccountPage(WebDriver driver, WebDriverWait wait) {
         PageFactory.initElements(driver, this);
@@ -45,25 +43,47 @@ public class MyAccountPage {
         this.actions = new Actions(driver);
     }
     
-    public LoggedUserPage registerValidDataUser(String email, String password) throws InterruptedException {
+    public WebElement getError() {
+        return error;
+    }
     
-        repetitiveFillUp(email,password);
+    public LoggedUserPage registerValidDataUser(String email, String password) throws InterruptedException {
+        
+        repetitiveRegisterFillUp(email, password);
         
         return new LoggedUserPage(driver);
     }
     
     public MyAccountPage registerInvalidDataUser(String email, String password) throws InterruptedException {
         
-       repetitiveFillUp(email,password);
+        repetitiveRegisterFillUp(email, password);
         
         return this;
     }
     
-    public void repetitiveFillUp(String email,String password) throws InterruptedException {
+    public void repetitiveRegisterFillUp(String email, String password) throws InterruptedException {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("register")));
         regEmail.sendKeys(email);
         regPassword.sendKeys(password);
         Thread.sleep(1000);
         actions.moveToElement(registerButton).click().perform();
     }
+    
+    public void repetitiveLoginFillUp(String username, String password){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("login")));
+        usernameInput.sendKeys(username);
+        passwordInput.sendKeys(password);
+        actions.moveToElement(loginButton).click().perform();
+    }
+    
+    public LoggedUserPage validLoginIn(String username, String password) {
+        repetitiveLoginFillUp(username, password);
+        return new LoggedUserPage(driver);
+    }
+    
+    public MyAccountPage invalidLoginIn(String username, String password) {
+        repetitiveLoginFillUp(username, password);
+        return this;
+    }
 }
+

@@ -4,15 +4,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pl.testeroprogramowania.models.Customer;
+import pl.testeroprogramowania.utills.SeleniumHelper;
 
 public class AddressDetails {
     
     private final WebDriver driver;
-    private final WebDriverWait wait;
     
     @FindBy(id = "billing_first_name")
     private WebElement firstNameInput;
@@ -47,14 +45,14 @@ public class AddressDetails {
     @FindBy(id = "order_comments")
     private WebElement commentsInput;
     
-    public AddressDetails(WebDriver driver, WebDriverWait wait) {
+    public AddressDetails(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-        this.wait = wait;
     }
     
     public OrderDetailsPage fillAddressDetails(Customer customer, String comments) {
-        wait.until(ExpectedConditions.visibilityOf(firstNameInput));
+        SeleniumHelper.waitForClickable(firstNameInput, driver);
+        
         firstNameInput.sendKeys(customer.getFirstName());
         lastNameInput.sendKeys(customer.getLastName());
         Select select = new Select(countryInput);
@@ -68,6 +66,10 @@ public class AddressDetails {
         commentsInput.sendKeys(comments);
         placeOrderButton.click();
         
-        return new OrderDetailsPage(driver, wait);
+        return new OrderDetailsPage(driver);
     }
 }
+
+
+
+

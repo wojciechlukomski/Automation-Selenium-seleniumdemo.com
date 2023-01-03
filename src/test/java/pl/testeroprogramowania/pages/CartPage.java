@@ -5,33 +5,28 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import pl.testeroprogramowania.utills.SeleniumHelper;
 
 public class CartPage {
     
     private final WebDriver driver;
-    private final WebDriverWait wait;
     private final Actions actions;
     
     @FindBy(xpath = "//*[@id='page-5']/div/section/div/div/div[2]/div/div/a")
     private WebElement proceedToCheckoutButton;
     
-    
-    
-    public CartPage(WebDriver driver,WebDriverWait wait) {
+    public CartPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-        this.wait  = wait;
         this.actions = new Actions(driver);
     }
     
     public AddressDetails openAddressDetails() throws InterruptedException {
-        wait.until(ExpectedConditions.visibilityOf(proceedToCheckoutButton));
+        SeleniumHelper.waitForClickable(proceedToCheckoutButton, driver);
         actions.moveToElement(proceedToCheckoutButton);
-        Thread.sleep(1000);
+//        Thread.sleep(1000);
         proceedToCheckoutButton.click();
         
-        return new AddressDetails(driver, wait);
+        return new AddressDetails(driver);
     }
 }

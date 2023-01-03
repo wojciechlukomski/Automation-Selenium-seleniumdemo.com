@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pl.testeroprogramowania.pages.HomePage;
+import pl.testeroprogramowania.utills.SeleniumHelper;
 
 public class RegisterTest extends BaseTest {
     
@@ -13,7 +14,7 @@ public class RegisterTest extends BaseTest {
     public void registerUserTest() throws InterruptedException {
         int random = (int) (Math.random() * 1000);
         
-        WebElement dashboardLink = new HomePage(driver, wait)
+        WebElement dashboardLink = new HomePage(driver)
                 .openMyAccountPage()
                 .registerValidDataUser("test" + random + "@test.pl", "test123456@test123456.pl")
                 .getDashboardLink();
@@ -25,36 +26,13 @@ public class RegisterTest extends BaseTest {
     @Test
     public void registerUserTestWithExistingEmail() throws InterruptedException {
         int random = (int) (Math.random() * 1000);
-        WebElement error = new HomePage(driver, wait)
+        WebElement error = new HomePage(driver)
                 .openMyAccountPage()
-                .registerInvalidDataUser("test1@test.pl", "test123456@test123456.pl")
+                .registerInvalidDataUser("test1@test.pl", "zlehaslo.pl")
                 .getError();
         
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@class='woocommerce-error']//li")));
+        SeleniumHelper.waitForClickable(By.xpath("//ul[@class='woocommerce-error']//li"), driver);
 //        Thread.sleep(1000);
         Assert.assertTrue(error.getText().contains("An account is already registered with your email address. Please log in."));
-    }
-    
-    @Test
-    public void validLoginUserTest() {
-        WebElement logout = new HomePage(driver, wait)
-                .openMyAccountPage()
-                .validLoginIn("test1@test.pl", "test123456@test123456.pl")
-                .getLogoutLink();
-        
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Logout")));
-        Assert.assertEquals(logout.getText(), "Logout");
-    }
-    
-    @Test
-    public void invalidLoginUserTest() {
-        WebElement error = new HomePage(driver, wait)
-                .openMyAccountPage()
-                .invalidLoginIn("wojtek@test.pl", "test123456@test123456.pl")
-                .getError();
-        
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@class='woocommerce-error']//li")));
-//        Thread.sleep(1000);
-        Assert.assertTrue(error.getText().contains("Incorrect username or password."), "Expected text doesn't match!");
     }
 }

@@ -2,15 +2,16 @@ package pl.testeroprogramowania.models;
 
 public class Customer {
     
-    private String firstName;
-    private String lastName;
-    private String country;
-    private String street;
-    private String houseNumber;
-    private String zipcode;
-    private String city;
-    private String phone;
-    private String email;
+    private String firstName = "Wojtek";
+    private String lastName = "Luko";
+    private String country = "Poland";
+    private String street = "Chelmonskiego";
+    private String houseNumber= "14";
+    private String zipcode= "31-100";
+    private String city= "Krakow";
+    private String phone= "500500500";
+    private String email= "w@email.com";
+    
     
     public String getFirstName() {
         return firstName;
@@ -83,6 +84,4 @@ public class Customer {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
 }

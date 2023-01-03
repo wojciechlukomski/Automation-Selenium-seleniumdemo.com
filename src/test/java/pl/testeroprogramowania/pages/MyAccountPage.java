@@ -12,8 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class MyAccountPage {
     
     private final WebDriverWait wait;
-    private Actions actions;
-    private WebDriver driver;
+    private final Actions actions;
+    private final WebDriver driver;
     
     @FindBy(css = "#reg_email")
     private WebElement regEmail;
@@ -48,16 +48,12 @@ public class MyAccountPage {
     }
     
     public LoggedUserPage registerValidDataUser(String email, String password) throws InterruptedException {
-        
         repetitiveRegisterFillUp(email, password);
-        
-        return new LoggedUserPage(driver);
+        return new LoggedUserPage(driver, wait);
     }
     
     public MyAccountPage registerInvalidDataUser(String email, String password) throws InterruptedException {
-        
         repetitiveRegisterFillUp(email, password);
-        
         return this;
     }
     
@@ -69,7 +65,7 @@ public class MyAccountPage {
         actions.moveToElement(registerButton).click().perform();
     }
     
-    public void repetitiveLoginFillUp(String username, String password){
+    public void repetitiveLoginFillUp(String username, String password) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("login")));
         usernameInput.sendKeys(username);
         passwordInput.sendKeys(password);
@@ -78,7 +74,7 @@ public class MyAccountPage {
     
     public LoggedUserPage validLoginIn(String username, String password) {
         repetitiveLoginFillUp(username, password);
-        return new LoggedUserPage(driver);
+        return new LoggedUserPage(driver, wait);
     }
     
     public MyAccountPage invalidLoginIn(String username, String password) {

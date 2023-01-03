@@ -17,13 +17,13 @@ public class BaseTest {
     public void setup() {
         driver = DriverFactory.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
         driver.manage().window().maximize();
         driver.get("http://seleniumdemo.com/");
     }
-
-    @AfterMethod
-    public void tearDown(){
-        driver.quit();
-    }
-
+    
+//    @AfterMethod
+//    public void tearDown() {
+//        driver.quit();
+//    }
 }

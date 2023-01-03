@@ -11,8 +11,11 @@ public class HomePage {
     @FindBy(xpath = "//span[text()='My account']")
     private WebElement myAccountLink;
     
-    private WebDriver driver;
-    private WebDriverWait wait;
+    @FindBy(xpath = "//span[text()='Shop']")
+    private WebElement shopLink;
+    
+    private final WebDriver driver;
+    private final WebDriverWait wait;
     
     public HomePage(WebDriver driver, WebDriverWait wait) {
         PageFactory.initElements(driver, this);
@@ -23,5 +26,10 @@ public class HomePage {
     public MyAccountPage openMyAccountPage() {
         myAccountLink.click();
         return new MyAccountPage(driver, wait);
+    }
+    
+    public ProductListPage openProductListPage(){
+        shopLink.click();
+        return new ProductListPage(driver,wait);
     }
 }
